@@ -1,3 +1,5 @@
 *.conf
 !default.conf
-!koperasiio.conf
+!accounting.conf
+!inventory.conf
+!user_sso.conf
