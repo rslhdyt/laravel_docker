@@ -1,2 +1,3 @@
 /app/*
 /docker/logs/nginx/*
+.DS_Store
