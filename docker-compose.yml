@@ -1,7 +1,7 @@
 version: '3'
 
 networks:
-  rs_ananda:
+  laravel:
     driver: bridge
 
 volumes:
@@ -25,7 +25,7 @@ services:
       - "2222:22"
     tty: true
     networks:
-      - rs_ananda
+      - laravel
   php-fpm:
     build:
       context: ./docker/php-fpm
@@ -41,7 +41,7 @@ services:
     depends_on:
       - workspace
     networks:
-      - rs_ananda
+      - laravel
   nginx:
     build:
       context: ./docker/nginx
@@ -58,11 +58,9 @@ services:
     depends_on:
       - php-fpm
     networks:
-      rs_ananda:
+      laravel:
         aliases:
-          - user-sso.rsananda.local
-          - accounting.rsananda.local
-          - inventory.rsananda.local
+          - laravel.local
   mysql:
     build:
       context: ./docker/mysql
@@ -78,7 +76,7 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - rs_ananda
+      - laravel
   redis:
     build: ./docker/redis
     volumes:
@@ -86,7 +84,7 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - rs_ananda
+      - laravel
   php-worker:
     build:
       context: ./docker/php-worker
@@ -98,18 +96,4 @@ services:
     extra_hosts:
       - "dockerhost:10.0.75.1"
     networks:
-      - rs_ananda
-  # node:
-  #   image: node:${NODE_VERSION}
-  #   ports:
-  #     - 8080:8080
-  #   command: bash -c "npm install && npm run watch"
-  #   working_dir: /var/www/pos
-  #   volumes:
-  #     - ./app:/var/www:cached
-  #   environment:
-  #     HOST: 0.0.0.0
-  #   depends_on:
-  #     - workspace
-  #   networks:
-  #     - rs_ananda
+      - laravel
